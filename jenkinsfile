@@ -1,0 +1,37 @@
+pipeline {
+    agent {
+        node {
+            label 'built-in'
+            customWorkspace '/mnt/jenkins'
+        }
+    }
+    stages {
+        stage ('install') {
+            steps {
+                echo 'httpd install'
+                sh 'yum install httpd -y'
+            }
+        }
+        stage ('start') {
+            steps {
+                echo "httpd start"
+                sh 'service httpd start'
+            }
+        }
+        stage ('status check') {
+            steps {
+                echo "status"
+                sh 'service httpd status'
+            }
+        }
+        stage ('create index file') {
+            steps {
+                echo "creating index3.html"
+                sh 'touch /var/www/html/index3.html'
+                sh "echo 'hello all' >> /var/www/html/index3.html"
+                sh 'chmod 777 /var/www/html/index3.html'
+            }
+        }
+        
+    }
+}
